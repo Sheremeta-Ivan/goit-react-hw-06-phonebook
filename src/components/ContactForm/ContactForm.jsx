@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Form, Label, Button, Input } from './ContactForm.styled';
 import { ReactComponent as AddIcon } from '../icons/add.svg';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +24,9 @@ const ContactForm = () => {
       contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
     );
     if (isInContacts) {
-      alert(`${name} is already in contacts`);
+      toast.info(`${name} is already in contacts`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       return;
     }
     dispatch(addContact({ id: nanoid(), name, number }));
@@ -46,6 +50,7 @@ const ContactForm = () => {
   };
   return (
     <Form onSubmit={handleSubmit}>
+      <ToastContainer transition={Slide} />
       <Label htmlFor={nameInputId}>
         Name
         <Input
